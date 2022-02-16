@@ -10,14 +10,16 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="panel_menu_titulo2" alignment="0" max="32767" attributes="0"/>
+              <Component id="cp_test" min="-2" max="-2" attributes="0"/>
+              <Component id="panel_menu_titulo2" min="-2" max="-2" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="panel_menu_titulo2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="329" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="cp_test" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -36,7 +38,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="322" max="-2" attributes="0"/>
                       <Component id="label_titulo1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="327" max="-2" attributes="0"/>
+                      <EmptySpace pref="340" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -64,6 +66,8 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="com.testtrafico.componentesPreguntas" name="cp_test">
+        </Component>
       </SubComponents>
     </Container>
   </NonVisualComponents>

@@ -1,21 +1,6 @@
 package com.testtrafico;
 
-import java.io.BufferedInputStream;
-import java.io.EOFException;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author Diego
@@ -25,48 +10,47 @@ public class MainApp extends javax.swing.JFrame {
     public MainApp() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.setSize(777,444);
+        this.setSize(777,500);
         this.setResizable(false);
     }
     
+    
+    
+    protected void PanelTest(){
+        // Aquí establecemos el prototipo de diseño en el frame de Test
+        frame_test.setLocationRelativeTo(null);
+        frame_test.setSize(790, 500);
+        frame_test.setResizable(false);
+        frame_test.setVisible(true);
+    }
+    
+    
+    
     protected void escogerBBDD() {
-        //Recuperamos la ruta en la que queremos guardar
+        //Recuperamos la ruta en la que queremos escoger la BBDD
         var fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         
+        // Establecemos el nombre de la BBDD escogida para trabajar con ella en la app
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            txtF_elegir_bbdd.setText(fc.getSelectedFile().getName());
+            txtF_elegir_bbdd.setText(fc.getSelectedFile().getName()); 
         }
     }
     
-    protected void comenzarTests(){        
-        test t = new test();
-        //String query = "SELECT * FROM test where id=?";
-        try (            
-            Connection con = DriverManager.getConnection("jdbc:sqlite:bdTestTrafico");
-            //var pstTest = con.prepareStatement(query) // PrepareStatement para evitar SQL injection           
-        ) {
-            JOptionPane.showMessageDialog(null, "Conexión establecida");
-            this.setVisible(false);
-            frame_test.setLocationRelativeTo(null);
-            frame_test.setSize(555,222);
-            frame_test.setResizable(false);
-            frame_test.setVisible(true);
-                   
-//            try(var rs = pstTest.executeQuery()){
-//                while(rs.next()){
-//                    System.out.format(rs.getString(1));
-//                    System.out.format(rs.getString(2));
-//                    System.out.format(rs.getString(3));
-//                    System.out.format(rs.getString(4));
-//                }
-//            } catch (SQLException ex) {
-//                System.out.println("Error al ejecutar la consulta");
-//            }   
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al realizar la conexión en la BBDD", "", JOptionPane.ERROR_MESSAGE);
-            System.err.println(ex.toString());
-        }
+    
+    
+    private void comenzarTests() {
+        this.setVisible(false); // Ocultamos el panel principal
+        PanelTest(); // Mostramos el panel de los Tests
+        cp_test.mostrarTest(); // Mostramos la info de preguntas y respuestas en los test
+    }
+    
+    
+    
+    private void finalizarTest(){
+        // Aquí realizaremos la acción de finalizar el test directamente, en
+        // caso de que el usuario no quiera seguir realizando test
+        // ***** Implementar botón en la app *****
     }
     
     @SuppressWarnings("unchecked")
@@ -76,6 +60,7 @@ public class MainApp extends javax.swing.JFrame {
         frame_test = new javax.swing.JFrame();
         panel_menu_titulo2 = new javax.swing.JPanel();
         label_titulo1 = new javax.swing.JLabel();
+        cp_test = new com.testtrafico.componentesPreguntas();
         panel_menu_titulo1 = new javax.swing.JPanel();
         label_titulo = new javax.swing.JLabel();
         panel_inicio = new javax.swing.JPanel();
@@ -103,7 +88,7 @@ public class MainApp extends javax.swing.JFrame {
             .addGroup(panel_menu_titulo2Layout.createSequentialGroup()
                 .addGap(322, 322, 322)
                 .addComponent(label_titulo1)
-                .addGap(327, 327, 327))
+                .addContainerGap(340, Short.MAX_VALUE))
         );
         panel_menu_titulo2Layout.setVerticalGroup(
             panel_menu_titulo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,13 +102,15 @@ public class MainApp extends javax.swing.JFrame {
         frame_test.getContentPane().setLayout(frame_testLayout);
         frame_testLayout.setHorizontalGroup(
             frame_testLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel_menu_titulo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(cp_test, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(panel_menu_titulo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         frame_testLayout.setVerticalGroup(
             frame_testLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(frame_testLayout.createSequentialGroup()
                 .addComponent(panel_menu_titulo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(329, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cp_test, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -285,6 +272,7 @@ public class MainApp extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_elegir_bbdd;
     private javax.swing.JButton btn_empezar;
+    private com.testtrafico.componentesPreguntas cp_test;
     private javax.swing.JFrame frame_test;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;

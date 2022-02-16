@@ -16,5 +16,10 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.36.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>EjemploPractico</groupId>
+            <artifactId>DEIN_Componentes</artifactId>
+            <version>11.3</version>
+        </dependency>
     </dependencies>
 </project>
