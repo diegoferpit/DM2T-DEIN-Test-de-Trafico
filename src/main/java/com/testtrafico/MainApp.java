@@ -10,7 +10,7 @@ public class MainApp extends javax.swing.JFrame {
     public MainApp() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.setSize(777,500);
+        this.setSize(900,500);
         this.setResizable(false);
     }
     
@@ -19,7 +19,7 @@ public class MainApp extends javax.swing.JFrame {
     protected void PanelTest(){
         // Aquí establecemos el prototipo de diseño en el frame de Test
         frame_test.setLocationRelativeTo(null);
-        frame_test.setSize(790, 500);
+        frame_test.setSize(850, 500);
         frame_test.setResizable(false);
         frame_test.setVisible(true);
     }
@@ -37,30 +37,50 @@ public class MainApp extends javax.swing.JFrame {
         }
     }
     
-    
+    // La conexión a la BBDD la realizamos desde la clase de test
     
     private void comenzarTests() {
         this.setVisible(false); // Ocultamos el panel principal
         PanelTest(); // Mostramos el panel de los Tests
-        cp_test.mostrarTest(); // Mostramos la info de preguntas y respuestas en los test
+        cp.mostrarTest(); // Mostramos la info de preguntas y respuestas en los test
+    }
+
+    // Avanzamos a la siguiente pregunta y se muestra en el panel de componentes
+    protected void siguientePregunta(){
+        System.out.println("Clickaste en "+btn_siguiente.getActionCommand());
+        panel_test.add(cp);  
+        cp.mostrarTestAleatorio();
+        cp.seleccionarRespuesta();
+        panel_test.validate();  // Validamos
+        panel_test.repaint();   // Pintamos de nuevo el panel 
     }
     
+        // Debemos volver a la pregunta de antes y que esté la respuesta escogida
+        // por el usuario en caso de que haya seleccionado.
+//    protected void anteriorPregunta(){
+//        System.out.println("Clickaste en "+btn_anterior.getActionCommand());
+//    }
     
-    
-    private void finalizarTest(){
-        // Aquí realizaremos la acción de finalizar el test directamente, en
-        // caso de que el usuario no quiera seguir realizando test
-        // ***** Implementar botón en la app *****
-    }
+//    private void finalizarTest(){
+//        // Aquí realizaremos la acción de finalizar el test directamente, en
+//        // caso de que el usuario no quiera seguir realizando test
+//        // ***** Implementar botón en la app *****
+//    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         frame_test = new javax.swing.JFrame();
+        panel_componentes = new javax.swing.JPanel();
+        panel_test = new javax.swing.JPanel();
+        cp = new com.testtrafico.componentesPreguntas();
         panel_menu_titulo2 = new javax.swing.JPanel();
         label_titulo1 = new javax.swing.JLabel();
-        cp_test = new com.testtrafico.componentesPreguntas();
+        panel_botones = new javax.swing.JPanel();
+        btn_anterior = new javax.swing.JButton();
+        btn_siguiente = new javax.swing.JButton();
+        btns_group = new javax.swing.ButtonGroup();
         panel_menu_titulo1 = new javax.swing.JPanel();
         label_titulo = new javax.swing.JLabel();
         panel_inicio = new javax.swing.JPanel();
@@ -75,6 +95,21 @@ public class MainApp extends javax.swing.JFrame {
 
         frame_test.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        panel_test.setBackground(new java.awt.Color(204, 204, 255));
+
+        javax.swing.GroupLayout panel_testLayout = new javax.swing.GroupLayout(panel_test);
+        panel_test.setLayout(panel_testLayout);
+        panel_testLayout.setHorizontalGroup(
+            panel_testLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_testLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(cp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        panel_testLayout.setVerticalGroup(
+            panel_testLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(cp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         panel_menu_titulo2.setBackground(new java.awt.Color(0, 0, 51));
 
         label_titulo1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -86,31 +121,92 @@ public class MainApp extends javax.swing.JFrame {
         panel_menu_titulo2Layout.setHorizontalGroup(
             panel_menu_titulo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_menu_titulo2Layout.createSequentialGroup()
-                .addGap(322, 322, 322)
+                .addGap(318, 318, 318)
                 .addComponent(label_titulo1)
-                .addContainerGap(340, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panel_menu_titulo2Layout.setVerticalGroup(
             panel_menu_titulo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_menu_titulo2Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+            .addGroup(panel_menu_titulo2Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
                 .addComponent(label_titulo1)
-                .addGap(41, 41, 41))
+                .addGap(44, 44, 44))
+        );
+
+        javax.swing.GroupLayout panel_componentesLayout = new javax.swing.GroupLayout(panel_componentes);
+        panel_componentes.setLayout(panel_componentesLayout);
+        panel_componentesLayout.setHorizontalGroup(
+            panel_componentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panel_test, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel_menu_titulo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        panel_componentesLayout.setVerticalGroup(
+            panel_componentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_componentesLayout.createSequentialGroup()
+                .addComponent(panel_menu_titulo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panel_test, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        btn_anterior.setBackground(new java.awt.Color(0, 0, 51));
+        btn_anterior.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        btn_anterior.setForeground(new java.awt.Color(255, 255, 255));
+        btn_anterior.setText("Anterior");
+        btn_anterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_anteriorActionPerformed(evt);
+            }
+        });
+
+        btn_siguiente.setBackground(new java.awt.Color(0, 0, 51));
+        btn_siguiente.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        btn_siguiente.setForeground(new java.awt.Color(255, 255, 255));
+        btn_siguiente.setText("Siguiente");
+        btn_siguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_siguienteActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panel_botonesLayout = new javax.swing.GroupLayout(panel_botones);
+        panel_botones.setLayout(panel_botonesLayout);
+        panel_botonesLayout.setHorizontalGroup(
+            panel_botonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_botonesLayout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(btn_anterior, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(150, 150, 150))
+        );
+        panel_botonesLayout.setVerticalGroup(
+            panel_botonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_botonesLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(panel_botonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_anterior, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30))
         );
 
         javax.swing.GroupLayout frame_testLayout = new javax.swing.GroupLayout(frame_test.getContentPane());
         frame_test.getContentPane().setLayout(frame_testLayout);
         frame_testLayout.setHorizontalGroup(
             frame_testLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(cp_test, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(panel_menu_titulo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(panel_componentes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frame_testLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panel_botones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         frame_testLayout.setVerticalGroup(
             frame_testLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(frame_testLayout.createSequentialGroup()
-                .addComponent(panel_menu_titulo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cp_test, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panel_componentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panel_botones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -233,6 +329,14 @@ public class MainApp extends javax.swing.JFrame {
     private void btn_empezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_empezarActionPerformed
         comenzarTests();
     }//GEN-LAST:event_btn_empezarActionPerformed
+
+    private void btn_siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_siguienteActionPerformed
+        siguientePregunta();
+    }//GEN-LAST:event_btn_siguienteActionPerformed
+
+    private void btn_anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_anteriorActionPerformed
+        // anteriorPregunta();
+    }//GEN-LAST:event_btn_anteriorActionPerformed
     
     /**
      * @param args the command line arguments
@@ -270,9 +374,14 @@ public class MainApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_anterior;
     private javax.swing.JButton btn_elegir_bbdd;
     private javax.swing.JButton btn_empezar;
-    private com.testtrafico.componentesPreguntas cp_test;
+    private javax.swing.JButton btn_siguiente;
+    private javax.swing.ButtonGroup btns_group;
+    private com.testtrafico.componentesPreguntas cp;
+    private com.testtrafico.componentesPreguntas cp_test1;
+    private com.testtrafico.componentesPreguntas cp_test2;
     private javax.swing.JFrame frame_test;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -280,9 +389,14 @@ public class MainApp extends javax.swing.JFrame {
     private javax.swing.JLabel label_num_preguntas;
     private javax.swing.JLabel label_titulo;
     private javax.swing.JLabel label_titulo1;
+    private javax.swing.JPanel panel_botones;
+    private javax.swing.JPanel panel_componentes;
+    private javax.swing.JPanel panel_componentesPreguntas1;
+    private javax.swing.JPanel panel_componentesPreguntas2;
     private javax.swing.JPanel panel_inicio;
     private javax.swing.JPanel panel_menu_titulo1;
     private javax.swing.JPanel panel_menu_titulo2;
+    private javax.swing.JPanel panel_test;
     private javax.swing.JSpinner spinner_num_preguntas;
     private javax.swing.JTextField txtF_elegir_bbdd;
     // End of variables declaration//GEN-END:variables

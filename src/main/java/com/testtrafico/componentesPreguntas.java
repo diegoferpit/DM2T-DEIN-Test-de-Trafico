@@ -14,17 +14,20 @@ public class componentesPreguntas extends javax.swing.JPanel {
     protected test t = new test(); 
     protected String pt, rc, re2, re3;
     protected ArrayList<test> escogerTest = t.listarPyR(); // En el ArrayList guardamos la info almacenada de listarPyR en el objeto    
-    protected Stack < Integer > visualizarTestRnd = new Stack <  > (); // Empleamos stack para guardar los números aleatorios
+    protected ArrayList<test> listaDesordenada = new ArrayList();
+    protected Stack < Integer > visualizarIdTestRnd = new Stack <  > (); // Empleamos stack para guardar los números aleatorios
     protected Random r = new Random(); // Implementamos random para escoger las preguntas y respuestas
-    protected int epyr; // Es el id del random para escoger la pregunta y respuesta
+    protected int epyr, idT, idVTR; // Es el id del random para escoger la pregunta y respuesta
+    protected boolean click;
     
     
     public componentesPreguntas() {
-        initComponents();  
+        initComponents();
+        jScrollPane1.setAutoscrolls(false);
     }
     
     public void setPregunta(){
-        label_pregunta.setText(t.getPregunta());
+        txtA_pregunta.setText(t.getPregunta());
     }
     
     public void setRespuesta1(){
@@ -39,23 +42,12 @@ public class componentesPreguntas extends javax.swing.JPanel {
         rad_but_3.setText(t.getResErronea3());
     }
     
-    // Mostramos y avanzamos/retrocedemos en los paneles
+    // Mostramos cuando el usuario comienza a hacer el test
     protected void mostrarTest(){    
-        System.out.println("Pregunta actual");        
-        generarTestAleatorio();
-
-//        for (int i=0; i<visualizarTest.size(); i++) {
-//            
-//                // Se muestra en el panel
-//                label_pregunta.setText(i+"-"+pt);
-//                rad_but_1.setText("A) "+rc);
-//                rad_but_2.setText("B) "+re2);
-//                rad_but_3.setText("C) "+re3);
-//            
-//        }
-//            componentesPreguntas cp = new componentesPreguntas();
-//            cp.validate();  // Validamos
-//            cp.repaint();   // Pintamos de nuevo el panel      
+        System.out.println("Pregunta actual");
+        generarNumeroAleatorio();
+        guardarTestAleatorio();
+        mostrarTestAleatorio();
     }
     
     @SuppressWarnings("unchecked")
@@ -63,16 +55,11 @@ public class componentesPreguntas extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroup = new javax.swing.ButtonGroup();
-        label_pregunta = new javax.swing.JLabel();
         rad_but_1 = new javax.swing.JRadioButton();
         rad_but_2 = new javax.swing.JRadioButton();
         rad_but_3 = new javax.swing.JRadioButton();
-        btn_anterior = new javax.swing.JButton();
-        btn_siguiente = new javax.swing.JButton();
-
-        label_pregunta.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        label_pregunta.setForeground(new java.awt.Color(0, 0, 51));
-        label_pregunta.setText("Pregunta del test");
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtA_pregunta = new javax.swing.JTextArea();
 
         buttonGroup.add(rad_but_1);
         rad_but_1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -101,59 +88,39 @@ public class componentesPreguntas extends javax.swing.JPanel {
             }
         });
 
-        btn_anterior.setBackground(new java.awt.Color(0, 0, 51));
-        btn_anterior.setForeground(new java.awt.Color(255, 255, 255));
-        btn_anterior.setText("Anterior");
-        btn_anterior.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_anteriorActionPerformed(evt);
-            }
-        });
-
-        btn_siguiente.setBackground(new java.awt.Color(0, 0, 51));
-        btn_siguiente.setForeground(new java.awt.Color(255, 255, 255));
-        btn_siguiente.setText("Siguiente");
-        btn_siguiente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_siguienteActionPerformed(evt);
-            }
-        });
+        txtA_pregunta.setColumns(20);
+        txtA_pregunta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        txtA_pregunta.setForeground(new java.awt.Color(0, 0, 51));
+        txtA_pregunta.setRows(5);
+        txtA_pregunta.setText("Pregunta\n");
+        txtA_pregunta.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jScrollPane1.setViewportView(txtA_pregunta);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(100, 100, 100)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rad_but_1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn_anterior, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 290, Short.MAX_VALUE)
-                        .addComponent(btn_siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(label_pregunta)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(rad_but_2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rad_but_3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(rad_but_1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE)
+                    .addComponent(rad_but_2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rad_but_3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(100, 100, 100))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(label_pregunta)
-                .addGap(37, 37, 37)
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(rad_but_1)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(rad_but_2)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(rad_but_3)
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_anterior, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -169,75 +136,90 @@ public class componentesPreguntas extends javax.swing.JPanel {
         seleccionarRespuesta();
     }//GEN-LAST:event_rad_but_3ActionPerformed
 
-    private void btn_anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_anteriorActionPerformed
-        anteriorPregunta();
-    }//GEN-LAST:event_btn_anteriorActionPerformed
-
-    private void btn_siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_siguienteActionPerformed
-        siguientePregunta();
-    }//GEN-LAST:event_btn_siguienteActionPerformed
-
     // Guardamos de forma aleatoria el número para mostrarlo en pantalla
-    protected void generarTestAleatorio(){
+    protected void generarNumeroAleatorio(){
         // Recorremos el arrayList de escogerTest 
         for (int i = 0; i < escogerTest.size() ; i++) {
             // Realizamos un número random entre 1 y el tamaño del arrayList escogerTest
             epyr = r.nextInt(escogerTest.size());
-            // Comprobamos que esté almacenado el mismo número
-            while (visualizarTestRnd.contains(epyr)) {
+            // Comprobamos si está almacenado el mismo número
+            while (visualizarIdTestRnd.contains(epyr)) {
                 epyr = r.nextInt(escogerTest.size()); // Si no se crea otro número random
             }
-            visualizarTestRnd.push(epyr); // Se borra el número para que no quede almacenado en la variable
+            visualizarIdTestRnd.push(epyr); // Se añade el número al array
         }
         System.out.println("Núm. aleatorios sin repetición:");
-        System.out.println(visualizarTestRnd.toString());
+        System.out.println(visualizarIdTestRnd.toString());
     }
+    
+    protected void guardarTestAleatorio(){
+        for (int i=0; i<escogerTest.size(); i++) {         
+            // Almacenamos el valor del Id Random en la variable y lo comprobamos
+            idVTR = visualizarIdTestRnd.get(i);
+            for (int j=0; j<visualizarIdTestRnd.size(); j++){
+                // Si se da el valor, se reciben los datos y se guardan
+                if(j == idVTR){
+                    test ld = new test(); 
+                    ld.setPregunta(pt = escogerTest.get(j).getPregunta());
+                    ld.setResCorrecta(rc = escogerTest.get(j).getResCorrecta());
+                    ld.setResErronea2(re2 = escogerTest.get(j).getResErronea2());
+                    ld.setResErronea3(re3 = escogerTest.get(j).getResErronea3());  
+                    listaDesordenada.add(ld); // Añadimos los datos a un arrayList de objetos
+                    
+//                    pt = escogerTest.get(j).getPregunta();
+//                    rc = escogerTest.get(j).getResCorrecta();
+//                    re2 = escogerTest.get(j).getResErronea2();
+//                    re3 = escogerTest.get(j).getResErronea3();  
+                    System.out.println(idVTR);
+                    System.out.println(pt);
+                    System.out.println(rc);
+                    System.out.println(re2);
+                    System.out.println(re3);
+                }               
+            }
+        }
+    }
+    
+    
+    protected void mostrarTestAleatorio(){
+        // Papel y boli
+        for (int i=0; i<listaDesordenada.size(); i++) {
+            idVTR = visualizarIdTestRnd.get(i);
+            System.out.println(idVTR);
+            for (int j=0; j<listaDesordenada.size(); j++) { 
+                if(j == idVTR){
+                    txtA_pregunta.setText(listaDesordenada.get(i).getPregunta());
+                    rad_but_1.setText(listaDesordenada.get(i).getResCorrecta());
+                    rad_but_2.setText(listaDesordenada.get(i).getResErronea2());
+                    rad_but_3.setText(listaDesordenada.get(i).getResErronea3());
+                    
+//                    System.out.println(listaDesordenada.get(j).getPregunta());
+//                    System.out.println(listaDesordenada.get(j).getResCorrecta());
+//                    System.out.println(listaDesordenada.get(j).getResErronea2());
+//                    System.out.println(listaDesordenada.get(j).getResErronea3());
+               }
+            }
+        }
+    }
+    
     
     // Aquí seleccionamos la respuesta del panel que ha escogido el usuario
-    protected void seleccionarRespuesta() {
-        if(rad_but_1.isSelected()) 
-        if(rad_but_2.isSelected()) 
-        if(rad_but_3.isSelected()) ;
+    protected Stack < Integer > sr = new Stack <  > ();
+    protected int seleccionarRespuesta() {
+        if(rad_but_1.isSelected()){ System.out.println("Correcta"); sr.add(1); return 1;}
+        if(rad_but_2.isSelected()){ System.out.println("Erronea"); sr.add(2); return 2;}
+        if(rad_but_3.isSelected()){ System.out.println("Erronea"); sr.add(3); return 3;}
+        else sr.add(-1); return -1;
     }
     
-    // Debemos volver a la pregunta de antes y que esté la respuesta escogida
-    // por el usuario en caso de que haya seleccionado.
-    protected void anteriorPregunta(){
-        System.out.println("Clickaste en "+btn_anterior.getActionCommand());
-    }
-
-    // Avanzamos a la siguiente pregunta y se muestra en el panel de componentes
-    protected void siguientePregunta(){
-        System.out.println("Clickaste en "+btn_siguiente.getActionCommand());
-//        for (int i=0; i<escogerTest.size(); i++) {
-//            pt = escogerTest.get(i).getPregunta();
-//            rc = escogerTest.get(i).getResCorrecta();
-//            re2 = escogerTest.get(i).getResErronea2();
-//            re3 = escogerTest.get(i).getResErronea3();
-//            
-//            // Se muestra en el panel
-//            label_pregunta.setText(i+"-"+pt);
-//            rad_but_1.setText("A) "+rc);
-//            rad_but_2.setText("B) "+re2);
-//            rad_but_3.setText("C) "+re3);
-//            // Se muestra en pantalla
-//            System.out.println(i + pt);
-//            System.out.println(i + rc);
-//            System.out.println(i + re2);
-//            System.out.println(i + re3);
-//        }        
-        
-    }
-
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_anterior;
-    private javax.swing.JButton btn_siguiente;
     protected javax.swing.ButtonGroup buttonGroup;
-    private javax.swing.JLabel label_pregunta;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rad_but_1;
     private javax.swing.JRadioButton rad_but_2;
     private javax.swing.JRadioButton rad_but_3;
+    private javax.swing.JTextArea txtA_pregunta;
     // End of variables declaration//GEN-END:variables
 
 }
